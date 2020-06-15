@@ -2478,7 +2478,19 @@ cdef class TwoPartyServer:
             poll_once()
             await asyncio.sleep(0.01)
 
-    cpdef run_forever(self):
+    def run_forever(self):
+        """
+        Poll libcapnp library forever
+        """
+        while True:
+            poll_once()
+
+    cpdef _run_forever(self):
+        """
+        Old version of run_forever()
+        Don't use unless you know what you're doing.
+        This version may become stuck and may require forceably killing the Python process if libcapnp becomes stuck
+        """
         if self.port_promise is None:
             raise KjException("You must pass a string as the socket parameter in __init__ to use this function")
 
